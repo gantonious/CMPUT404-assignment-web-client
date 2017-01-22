@@ -9,6 +9,15 @@ class HostBasedRequest(HttpRequest):
         HttpRequest.__init__(self, method, path)
         self.with_header("Host", host)
 
+    def host_port(self):
+        host_address = self.header("Host")
+
+        if ":" in host_address:
+            index_of_colon = host_address.index(":")
+            return int(host_address[index_of_colon + 1:])
+
+        return 80
+    
     def extract_url_without_protocol(self, url):
         http_protocol_pattern = "(https*:\/\/)*(www.)*"
         return re.sub(http_protocol_pattern, "", url)
