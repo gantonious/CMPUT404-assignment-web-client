@@ -9,6 +9,15 @@ class HostBasedRequest(HttpRequest):
         HttpRequest.__init__(self, method, path)
         self.with_header("Host", host)
 
+    def host_address(self):
+        host_address = self.header("Host")
+
+        if ":" in host_address:
+            index_of_colon = host_address.index(":")
+            return host_address[:index_of_colon]
+
+        return host_address
+
     def host_port(self):
         host_address = self.header("Host")
 
