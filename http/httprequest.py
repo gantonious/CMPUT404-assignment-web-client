@@ -37,9 +37,9 @@ class HttpRequest:
         return not len(self._body)
 
     def serialize(self):
-        return self._build_request_line() + /
-               self._build_header_lines() + /
-               self._body()
+        return self._build_request_line() + \
+               self._build_header_lines() + \
+               self._build_body_line()
 
     def _build_request_line(self):
         return "{0} {1} HTTP/1.1".format(self.method(), self.path())
