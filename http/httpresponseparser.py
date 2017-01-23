@@ -24,7 +24,7 @@ class HttpResponseParser:
         return response
                 
     def _parse_respone_line(self, request_line):
-        response_tokens = shlex.split(request_line)
+        response_tokens = request_line.split(" ", 2)
         return HttpResponse(response_tokens[1], response_tokens[2])
     
     def _parse_header_line(self, header_line, response):
