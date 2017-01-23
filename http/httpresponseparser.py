@@ -7,9 +7,9 @@ class HttpResponseParser:
         response = None
         body = ""
 
-        for line in serailized_response.split("\n"):
+        for line in serailized_response.split("\r\n"):
             if state == 0:
-                response = self._parse_request_line(line)
+                response = self._parse_respone_line(line)
                 state = 1
             elif state == 1:
                 if line.strip() == "":
@@ -17,10 +17,10 @@ class HttpResponseParser:
                 else:
                     self._parse_header_line(line, response)
             elif state == 2:
-                if line != "\n":
-                    body += line
+                if line != "\r\n":
+                    body += line + "\n"
         
-        response.with_body(body)
+        response.with_body(body.strip())
         return response
                 
     def _parse_respone_line(self, request_line):
@@ -28,5 +28,8 @@ class HttpResponseParser:
         return HttpResponse(response_tokens[1], response_tokens[2])
     
     def _parse_header_line(self, header_line, response):
-        header_tokens = header_line.split(":")
-        response.with_header(header_tokens[0].strip(), header_tokens[1].strip())
+        colon_index = header_line.index(":")
+        header_key = header_line[:colon_index].strip()
+        header_value = header_line[colon_index + 1 :].strip()
+        
+        response.with_header(header_key, header_value)
