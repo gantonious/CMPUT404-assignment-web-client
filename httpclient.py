@@ -24,36 +24,52 @@ import re
 # you may use urllib to encode data appropriately
 import urllib
 
+from http.httprequesttypes import *
+from http.httpresponse import HttpResponse
+from http.httpresponseparser import HttpResponseParser
+
 def help():
     print "httpclient.py [GET/POST] [URL]\n"
 
-class HTTPResponse(object):
-    def __init__(self, code=200, body=""):
-        self.code = code
-        self.body = body
+class HTTPClient:
+    def __init__(self):
+        self._http_response_parser = HttpResponseParser()
 
-class HTTPClient(object):
-    #def get_host_port(self,url):
+    def establish_socket(self, http_request):
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket.settimeout(1)
 
-    def connect(self, host, port):
-        # use sockets!
-        return None
+        try:
+            server_socket.connect((http_request.host_address(), http_request.host_port()))
+        except Exception, e:
+            # TODO: find appropriate constant
+            if e.errno == 8:
+                print("Could not resolve hostname: {0}".format(http_request.host_address()))
+                sys.exit()
 
-    def get_code(self, data):
-        return None
+        return server_socket
 
-    def get_headers(self, data):
-        return None
+    def execute(self, http_request):
+        server_socket = self.establish_socket(http_request)
+        raw_http_request = http_request.serialize()
 
-    def get_body(self, data):
-        return None
+        server_socket.send(raw_http_request)
+        raw_http_response = self.recvall(server_socket)
+        http_response = self._http_response_parser.parse(raw_http_response)
+
+        server_socket.close()
+
+        return http_response
 
     # read everything from the socket
     def recvall(self, sock):
         buffer = bytearray()
         done = False
         while not done:
-            part = sock.recv(1024)
+            try:
+                part = sock.recv(1024)
+            except:
+                part = None
             if (part):
                 buffer.extend(part)
             else:
@@ -61,14 +77,12 @@ class HTTPClient(object):
         return str(buffer)
 
     def GET(self, url, args=None):
-        code = 500
-        body = ""
-        return HTTPResponse(code, body)
+        request = GetRequest(url)
+        return self.execute(request)
 
     def POST(self, url, args=None):
-        code = 500
-        body = ""
-        return HTTPResponse(code, body)
+        request = PostRequest(url)
+        return self.execute(request)
 
     def command(self, url, command="GET", args=None):
         if (command == "POST"):
