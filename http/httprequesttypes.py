@@ -28,7 +28,7 @@ class HostBasedRequest(HttpRequest):
         return 80
     
     def extract_url_without_protocol(self, url):
-        http_protocol_pattern = "(https*:\/\/)*(www.)*"
+        http_protocol_pattern = "https*:\/\/"
         return re.sub(http_protocol_pattern, "", url)
 
     def extract_host_from_url(self, url):
