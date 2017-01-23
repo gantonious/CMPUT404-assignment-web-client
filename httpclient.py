@@ -23,6 +23,7 @@ import socket
 import re
 # you may use urllib to encode data appropriately
 import urllib
+import json
 
 from http.httprequesttypes import *
 from http.httpresponse import HttpResponse
@@ -82,6 +83,11 @@ class HTTPClient:
 
     def POST(self, url, args=None):
         request = PostRequest(url)
+
+        if args is not None:
+            serialized_args = json.dumps(args)
+            request = request.with_body(serialized_args)
+            
         return self.execute(request)
 
     def command(self, url, command="GET", args=None):
