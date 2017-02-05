@@ -24,7 +24,7 @@ class HttpResponseParser:
                 
     def _parse_respone_line(self, request_line):
         response_tokens = request_line.split(" ", 2)
-        return HttpResponse(response_tokens[1], response_tokens[2])
+        return HttpResponse(int(response_tokens[1]), response_tokens[2])
     
     def _parse_header_line(self, header_line, response):
         colon_index = header_line.index(":")
