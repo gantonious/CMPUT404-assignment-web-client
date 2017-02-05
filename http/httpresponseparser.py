@@ -1,4 +1,3 @@
-import shlex
 from http.httpresponse import HttpResponse
 
 class HttpResponseParser:
