@@ -24,7 +24,7 @@ class HostBasedRequest(HttpRequest):
         self.with_header("Host", self.parsed_url.netloc)
 
     def prepare_url(self, url):
-        if not url.startswith("http://") or not url.startswith("https://"):
+        if not url.startswith("http://") and not url.startswith("https://"):
             url = "http://" + url
         return url
 
