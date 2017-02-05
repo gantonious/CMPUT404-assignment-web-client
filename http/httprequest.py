@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# from https://github.com/gantonious/CMPUT404-assignment-webserver/blob/master/http/httprequest.py
-# modfied on January 22
+# from https://github.com/gantonious/CMPUT404-assignment-webserver/blob/15b724ee57a2e7a7f89048fbcd2ea5b17bfc5b32/server.py#L33
+# modified on February 5 2017
 
 class HttpRequest:
     def __init__(self, method, path):

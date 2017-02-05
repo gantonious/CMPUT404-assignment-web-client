@@ -7,6 +7,14 @@ See requirements.org (plain-text) for a description of the project.
 
 Make a simple web-client like curl or wget
 
+Resources Used
+==============
+
+The licensing for resources used can be found at the top of their source files.
+
+- [HttpRequest](https://github.com/gantonious/CMPUT404-assignment-web-client/blob/master/http/httprequest.py) was extended based on this implementation of [HttpRequest](https://github.com/gantonious/CMPUT404-assignment-webserver/blob/15b724ee57a2e7a7f89048fbcd2ea5b17bfc5b32/server.py#L33)
+- [HttpResponse](https://github.com/gantonious/CMPUT404-assignment-web-client/blob/master/http/httpresponse.py) was extended based on this implementation of [HttpResponse](https://github.com/gantonious/CMPUT404-assignment-webserver/blob/15b724ee57a2e7a7f89048fbcd2ea5b17bfc5b32/server.py#L100)
+
 Contributors / Licensing
 ========================
 
