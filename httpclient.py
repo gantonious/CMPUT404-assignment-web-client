@@ -85,8 +85,8 @@ class HTTPClient:
         request = PostRequest(url)
 
         if args is not None:
-            serialized_args = json.dumps(args)
-            request = request.with_body(serialized_args)
+            request = request.with_header("Content-Type", "application/x-www-form-urlencoded") \
+                             .with_body(urllib.urlencode(args))
             
         return self.execute(request)
 
