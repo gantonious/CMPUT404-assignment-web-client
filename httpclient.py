@@ -38,7 +38,6 @@ class HTTPClient:
 
     def establish_socket(self, http_request):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.settimeout(1)
 
         try:
             server_socket.connect((http_request.host_address(), http_request.host_port()))
@@ -51,6 +50,8 @@ class HTTPClient:
         return server_socket
 
     def execute(self, http_request):
+        http_request.with_header("Connection", "close")
+        
         server_socket = self.establish_socket(http_request)
         raw_http_request = http_request.serialize()
 
@@ -67,10 +68,7 @@ class HTTPClient:
         buffer = bytearray()
         done = False
         while not done:
-            try:
-                part = sock.recv(1024)
-            except:
-                part = None
+            part = sock.recv(1024)
             if (part):
                 buffer.extend(part)
             else:
