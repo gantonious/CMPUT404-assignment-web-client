@@ -13,8 +13,7 @@ class HostBasedRequest(HttpRequest):
         host_address = self.header("Host")
 
         if ":" in host_address:
-            index_of_colon = host_address.index(":")
-            return host_address[:index_of_colon]
+            return host_address.split(":")[0]
 
         return host_address
 
@@ -22,8 +21,7 @@ class HostBasedRequest(HttpRequest):
         host_address = self.header("Host")
 
         if ":" in host_address:
-            index_of_colon = host_address.index(":")
-            return int(host_address[index_of_colon + 1:])
+            return int(host_address.split(":")[1])
 
         return 80
     
@@ -35,8 +33,7 @@ class HostBasedRequest(HttpRequest):
         pure_url = self.extract_url_without_protocol(url)
         
         if "/" in pure_url:
-            index_of_slash = pure_url.index("/")
-            return pure_url[:index_of_slash]
+            return pure_url.split("/")[0]
 
         return pure_url
 
