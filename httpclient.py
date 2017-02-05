@@ -42,8 +42,7 @@ class HTTPClient:
         try:
             server_socket.connect((http_request.host_address(), http_request.host_port()))
         except Exception, e:
-            # TODO: find appropriate constant
-            if e.errno == 8:
+            if e.errno == socket.errno.ENOEXEC:
                 print("Could not resolve hostname: {0}".format(http_request.host_address()))
                 sys.exit()
 
