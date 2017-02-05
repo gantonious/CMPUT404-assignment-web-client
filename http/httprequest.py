@@ -51,6 +51,9 @@ class HttpRequest:
     def has_body(self):
         return not len(self._body)
 
+    def __str__(self):
+        return self.serialize()
+
     def serialize(self):
         return self._build_request_line() + \
                self._build_header_lines() + \

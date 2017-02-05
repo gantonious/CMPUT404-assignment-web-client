@@ -20,7 +20,7 @@ class HostBasedRequest(HttpRequest):
     def __init__(self, method, url):
         self.parsed_url = urlparse.urlparse(url)
 
-        HttpRequest.__init__(self, method, self.parsed_url.path)
+        HttpRequest.__init__(self, method, self.parsed_url.path or "/")
         self.with_header("Host", self.parsed_url.netloc)
 
     def host_address(self):
