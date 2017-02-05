@@ -60,7 +60,19 @@ class HTTPClient:
 
         server_socket.close()
 
+        if self.can_handle_redirect(http_response):
+            redirect_request = self.build_redirect_request_from(http_response)
+            return self.execute(redirect_request)
+
         return http_response
+
+    def can_handle_redirect(self, http_response):
+        return http_response.code in (301, 302) and \
+               http_response.has_header("Location") and \
+               http_response.header("Location").startswith("http://")
+    
+    def build_redirect_request_from(self, http_response):
+        return GetRequest(http_response.header("Location"))
 
     # read everything from the socket
     def recvall(self, sock):

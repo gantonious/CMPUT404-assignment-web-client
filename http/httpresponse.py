@@ -36,6 +36,14 @@ class HttpResponse:
     def response_message(self):
         return self.message
 
+    def has_header(self, key):
+        return key in self.headers
+
+    def header(self, key):
+        if key in self.headers:
+            return self.headers[key]
+        return None
+
     def __str__(self):
         return self.serialize()
 
