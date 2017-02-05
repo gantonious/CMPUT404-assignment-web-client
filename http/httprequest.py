@@ -28,6 +28,7 @@ class HttpRequest:
     
     def with_body(self, body):
         self._body = body
+        self.with_header("Content-Length", len(body))
         return self
 
     def method(self):

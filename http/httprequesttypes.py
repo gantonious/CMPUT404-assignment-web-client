@@ -53,3 +53,4 @@ class GetRequest(HostBasedRequest):
 class PostRequest(HostBasedRequest):
     def __init__(self, url):
         HostBasedRequest.__init__(self, "POST", url)
+        self.with_header("Content-Length", 0)
