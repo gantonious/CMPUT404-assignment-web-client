@@ -1,50 +1,19 @@
 import re
+import urlparse
 from httprequest import HttpRequest
 
 class HostBasedRequest(HttpRequest):
     def __init__(self, method, url):
-        host = self.extract_host_from_url(url)
-        path = self.extract_path_from_url(url)
+        self.parsed_url = urlparse.urlparse(url)
 
-        HttpRequest.__init__(self, method, path)
-        self.with_header("Host", host)
+        HttpRequest.__init__(self, method, self.parsed_url.path)
+        self.with_header("Host", self.parsed_url.netloc)
 
     def host_address(self):
-        host_address = self.header("Host")
-
-        if ":" in host_address:
-            return host_address.split(":")[0]
-
-        return host_address
+        return self.parsed_url.hostname
 
     def host_port(self):
-        host_address = self.header("Host")
-
-        if ":" in host_address:
-            return int(host_address.split(":")[1])
-
-        return 80
-    
-    def extract_url_without_protocol(self, url):
-        http_protocol_pattern = "https*:\/\/"
-        return re.sub(http_protocol_pattern, "", url)
-
-    def extract_host_from_url(self, url):
-        pure_url = self.extract_url_without_protocol(url)
-        
-        if "/" in pure_url:
-            return pure_url.split("/")[0]
-
-        return pure_url
-
-    def extract_path_from_url(self, url):
-        pure_url = self.extract_url_without_protocol(url)
-        
-        if "/" in pure_url:
-            index_of_slash = pure_url.index("/")
-            return pure_url[index_of_slash:]
-            
-        return "/"
+        return self.parsed_url.port or 80
 
 class GetRequest(HostBasedRequest):
     def __init__(self, url):
