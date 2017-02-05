@@ -18,10 +18,15 @@ from httprequest import HttpRequest
 
 class HostBasedRequest(HttpRequest):
     def __init__(self, method, url):
-        self.parsed_url = urlparse.urlparse(url)
+        self.parsed_url = urlparse.urlparse(self.prepare_url(url))
 
         HttpRequest.__init__(self, method, self.parsed_url.path or "/")
         self.with_header("Host", self.parsed_url.netloc)
+
+    def prepare_url(self, url):
+        if not url.startswith("http://") or not url.startswith("https://"):
+            url = "http://" + url
+        return url
 
     def host_address(self):
         return self.parsed_url.hostname
